@@ -1,75 +1,38 @@
-import React, { useState, useEffect } from 'react';
 
-const GitHubUserSearch = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+import React, { useReducer } from 'react';
+import { doubleCounterReducer, initialState } from './DoubleCounter';
 
-  // Log any errors to the console whenever "error" changes
-  useEffect(() => {
-    if (error) {
-      console.error('Error fetching GitHub user:', error);
-    }
-  }, [error]);
-
-  const handleSearch = async () => {
-    if (!searchTerm) return;
-
-    setLoading(true);
-    setError('');
-    setUserData(null);
-
-    try {
-      // 1-second delay before fetching
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      const response = await fetch(
-        `https://api.github.com/users/${searchTerm.toLowerCase()}`
-      );
-
-      if (!response.ok) {
-        throw new Error('GitHub user not found');
-      }
-
-      const data = await response.json();
-      setUserData(data);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+const App = () => {
+  const [state, dispatch] = useReducer(doubleCounterReducer, initialState);
 
   return (
     <div>
-      <h2>GitHub User Search</h2>
-      <input
-        type="text"
-        placeholder="Enter GitHub username..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      <button onClick={handleSearch}>Search</button>
+      <h2>Double Counter</h2>
 
-      {loading && <p>Loading...</p>}
-      {error && <p style={{ color: 'red' }}>Error: {error}</p>}
+   
+      <div>
+        <h3>Counter A: {state.counterA}</h3>
+        <button onClick={() => dispatch({ type: 'DECREMENT_A' })} disabled={state.counterA === 0}>
+          - A
+        </button>
+        <button onClick={() => dispatch({ type: 'INCREMENT_A' })}>+ A</button>
+      </div>
 
-      {userData && (
-        <div style={{ marginTop: '1rem' }}>
-          <h3>{userData.name || userData.login}</h3>
-          <img
-            src={userData.avatar_url}
-            alt={userData.login}
-            width="100"
-            style={{ borderRadius: '50%' }}
-          />
-          <p>Location: {userData.location || 'N/A'}</p>
-          <p>Public Repos: {userData.public_repos}</p>
-        </div>
-      )}
+      {/* Counter B */}
+      <div>
+        <h3>Counter B: {state.counterB}</h3>
+        <button onClick={() => dispatch({ type: 'DECREMENT_B' })} disabled={state.counterB === 0}>
+          - B
+        </button>
+        <button onClick={() => dispatch({ type: 'INCREMENT_B' })}>+ B</button>
+      </div>
+
+      {/* Reset both counters */}
+      <div>
+        <button onClick={() => dispatch({ type: 'RESET_ALL' })}>Reset Both</button>
+      </div>
     </div>
   );
 };
 
-export default GitHubUserSearch;
+export default App;
