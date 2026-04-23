@@ -1,27 +1,27 @@
-import React, { useState, useEffect } from 'react';
+// Counter.jsx
+import { useState } from 'react';
 
-const MouseTracker = () => {
-  const [coords, setCoords] = useState({ x: 0, y: 0 });
+const Counter = () => {
+  const [count, setCount] = useState(0);
 
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setCoords({ x: e.clientX, y: e.clientY });
-    };
+  const increment = () => setCount(count + 1);
 
-    window.addEventListener('mousemove', handleMouseMove);
-
-    // Cleanup
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, []); // Runs once on mount
+  const decrement = () => {
+    if (count > 0) setCount(count - 1);
+  };
 
   return (
     <div>
-      <p>Mouse X: {coords.x}</p>
-      <p>Mouse Y: {coords.y}</p>
+      <h2>Count: {count}</h2>
+      <button onClick={decrement} disabled={count === 0}>
+        Decrement
+      </button>
+      <button onClick={increment}>Increment</button>
     </div>
   );
 };
 
-export default MouseTracker;
+export default Counter;
+
+
+
