@@ -1,27 +1,28 @@
-// Counter.jsx
-import { useState } from 'react';
+import React, { useState } from 'react';
+import CartContext from './CartContext';
+import ProductItem from './ProductItem';
+import CartSummary from './CartSummary';
 
-const Counter = () => {
-  const [count, setCount] = useState(0);
+function App() {
+  const [cartItems, setCartItems] = useState([]);
 
-  const increment = () => setCount(count + 1);
-
-  const decrement = () => {
-    if (count > 0) setCount(count - 1);
+  const addToCart = (item) => {
+    setCartItems([...cartItems, item]);
   };
 
+  const removeFromCart = (itemId) => {
+    setCartItems(cartItems.filter((item) => item.id !== itemId));
+  };
+
+  const value = { cartItems, addToCart, removeFromCart };
+
   return (
-    <div>
-      <h2>Count: {count}</h2>
-      <button onClick={decrement} disabled={count === 0}>
-        Decrement
-      </button>
-      <button onClick={increment}>Increment</button>
-    </div>
+    <CartContext.Provider value={value}>
+      <ProductItem itemId={1} itemName="Widget" price={19.99} />
+      <ProductItem itemId={2} itemName="Gadget" price={29.99} />
+      <CartSummary />
+    </CartContext.Provider>
   );
-};
+}
 
-export default Counter;
-
-
-
+export default App;
