@@ -1,75 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import LanguageContext from './LanguageContext';
+import Greeting from './Greeting';
 
-const GitHubUserSearch = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+function App() {
+  const [language, setLanguage] = useState('en');
 
-  // Log any errors to the console whenever "error" changes
-  useEffect(() => {
-    if (error) {
-      console.error('Error fetching GitHub user:', error);
-    }
-  }, [error]);
-
-  const handleSearch = async () => {
-    if (!searchTerm) return;
-
-    setLoading(true);
-    setError('');
-    setUserData(null);
-
-    try {
-      // 1-second delay before fetching
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      const response = await fetch(
-        `https://api.github.com/users/${searchTerm.toLowerCase()}`
-      );
-
-      if (!response.ok) {
-        throw new Error('GitHub user not found');
-      }
-
-      const data = await response.json();
-      setUserData(data);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+  const toggleLanguage = () => {
+    setLanguage((prevLang) => (prevLang === 'en' ? 'es' : 'en'));
   };
 
   return (
-    <div>
-      <h2>GitHub User Search</h2>
-      <input
-        type="text"
-        placeholder="Enter GitHub username..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      <button onClick={handleSearch}>Search</button>
-
-      {loading && <p>Loading...</p>}
-      {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-
-      {userData && (
-        <div style={{ marginTop: '1rem' }}>
-          <h3>{userData.name || userData.login}</h3>
-          <img
-            src={userData.avatar_url}
-            alt={userData.login}
-            width="100"
-            style={{ borderRadius: '50%' }}
-          />
-          <p>Location: {userData.location || 'N/A'}</p>
-          <p>Public Repos: {userData.public_repos}</p>
-        </div>
-      )}
-    </div>
+    <LanguageContext.Provider value={language}>
+      <button onClick={toggleLanguage}>
+        Switch to {language === 'en' ? 'Spanish' : 'English'}
+      </button>
+      <Greeting />
+    </LanguageContext.Provider>
   );
-};
+}
 
-export default GitHubUserSearch;
+export default App;
