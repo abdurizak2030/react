@@ -1,27 +1,12 @@
-// Counter.jsx
-import { useState } from 'react';
+import ContactForm from "../ContextForm";
 
-const Counter = () => {
-  const [count, setCount] = useState(0);
-
-  const increment = () => setCount(count + 1);
-
-  const decrement = () => {
-    if (count > 0) setCount(count - 1);
-  };
-
+function App() {
   return (
-    <div>
-      <h2>Count: {count}</h2>
-      <button onClick={decrement} disabled={count === 0}>
-        Decrement
-      </button>
-      <button onClick={increment}>Increment</button>
+    <div className="App">
+      <h1>Contact Form</h1>
+      <ContactForm />
     </div>
   );
-};
+}
 
-export default Counter;
-
-
-
+export default App;
