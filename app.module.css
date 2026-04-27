@@ -1,0 +1,56 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    padding: 20px;
+}
+
+.form {
+    display: flex;
+    gap: 10px;
+   
+}
+
+.TodoApp {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: auto;
+    max-width: 400px;
+    box-shadow: 0 2px 4px rgba(0, 0,
+0, 0.1);
+
+}
+.input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.button {
+    background-color: rgb(119, 7, 150);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.button:hover {
+    background-color: rgb(80, 5, 96);
+}
+.handleAdd {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.todoItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+.todoText {
+    flex: 1;
+    cursor: pointer;
+}
