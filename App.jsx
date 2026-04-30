@@ -1,27 +1,64 @@
-// Counter.jsx
-import { useState } from 'react';
 
-const Counter = () => {
-  const [count, setCount] = useState(0);
+import React, { useState } from 'react';
 
-  const increment = () => setCount(count + 1);
+function App() {
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    password: '',
+    agreeToTerms: false,
+    role: 'user',
+  });
 
-  const decrement = () => {
-    if (count > 0) setCount(count - 1);
-  };
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  
+    console.log(`Form Data:\nUsername: ${formData.username}\nEmail: ${formData.email}\nPassword: ${formData.password}\nAgree to Terms: ${formData.agreeToTerms}\nRole: ${formData.role}`);
+  }
 
   return (
     <div>
-      <h2>Count: {count}</h2>
-      <button onClick={decrement} disabled={count === 0}>
-        Decrement
-      </button>
-      <button onClick={increment}>Increment</button>
+      <h1>Registration Form</h1>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Username:</label>
+          <input type="text" name="username" value={formData.username} onChange={handleChange} />
+        </div>
+        <div>
+          <label>Email:</label>
+          <input type="email" name="email" value={formData.email} onChange={handleChange} />
+        </div>
+        <div>
+          <label>Password:</label>
+          <input type="password" name="password" value={formData.password} onChange={handleChange} />
+        </div>
+        <div>
+          <label>
+            <input type="checkbox" name="agreeToTerms" checked={formData.agreeToTerms} onChange={handleChange} />
+            Agree to Terms
+          </label>
+        </div>
+        <div>
+          <label>Role:</label>
+          <select name="role" value={formData.role} onChange={handleChange}>
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+            <option value="moderator">Moderator</option>
+          </select>
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+     
     </div>
   );
-};
+}
 
-export default Counter;
-
-
-
+export default App;
